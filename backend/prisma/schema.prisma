@@ -42,17 +42,15 @@ model Problem{
   title String
   description String
   difficulty Difficulty
-  tag String[] //["tag1","tag2","tag3"]
+  tags String[] //["tag1","tag2","tag3"]
   userId String
   examples Json
   constraints String
   hints String?
   editorial String?
-
   testcases  Json
-  codeSnippet Json
+  codeSnippets Json
   referenceSolutions Json
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

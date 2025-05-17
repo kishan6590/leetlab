@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -40,26 +34,22 @@ model User {
 }
 
 model Problem {
-  id          String     @id @default(uuid())
-  title       String
-  description String
-  difficulty  Difficulty
-  tag         String[] //["tag1","tag2","tag3"]
-  userId      String
-  examples    Json
-  constraints String
-  hints       String?
-  editorial   String?
-
+  id                 String     @id @default(uuid())
+  title              String
+  description        String
+  difficulty         Difficulty
+  tags               String[] //["tag1","tag2","tag3"]
+  userId             String
+  examples           Json
+  constraints        String
+  hints              String?
+  editorial          String?
   testcases          Json
-  codeSnippet        Json
+  codeSnippets       Json
   referenceSolutions Json
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
 
   //RelationShip  
-
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  //now here userId is become foreign key: jo realtion btata h dursre table k saath 
 }
