@@ -30,7 +30,6 @@ export const pollBatchResults = async (tokens) => {
       {
         params: {
           tokens: tokens.join(","),
-          base64_encoded: false,
         },
       }
     );

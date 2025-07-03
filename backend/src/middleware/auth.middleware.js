@@ -17,7 +17,6 @@ export const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized - Invalid token" });
     }
 
-    console.log("ii");
     const user = await db.user.findUnique({
       where: {
         id: decoded.id,
@@ -30,17 +29,15 @@ export const authMiddleware = async (req, res, next) => {
         role: true,
       },
     });
-    console.log("i");
+
     if (!user) {
       return res(404).json({ message: "User not found" });
     }
-    console.log("hi");
 
     req.user = user;
     next();
   } catch (error) {
     console.error("Error authenticating user ", error);
-
     return res.status(500).json({ message: "Error authenticating user" });
   }
 };
@@ -64,9 +61,10 @@ export const checkAdmin = async function (req, res, next) {
     }
 
     next();
-  } catch (error) {}
-  console.log("Error checking admin role:", error);
-  return res.status(500).json({
-    message: "Error checking admin role",
-  });
+  } catch (error) {
+    console.log("Error checking admin role:", error);
+    return res.status(500).json({
+      message: "Error checking admin role",
+    });
+  }
 };

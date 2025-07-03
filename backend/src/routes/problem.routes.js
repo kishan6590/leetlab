@@ -11,9 +11,9 @@ problemsRoutes.post(
   createProblem
 );
 problemsRoutes.get("/get-all-problems", authMiddleware, getAllProblems);
-problemsRoutes.get("get-problem/:id", authMiddleware, getProblemByid);
+problemsRoutes.get("/get-problem/:id", authMiddleware, getProblemByid);
 problemsRoutes.put("/update-problem/:id",authMiddleware,checkAdmin,updateProblem);
 problemsRoutes.delete("/delete-problem/:id",authMiddleware,checkAdmin,deleteProblem);
-problemsRoutes.get("/get-solved-problems",authMiddleware,getAllProblemsSolvedByUser);
+problemsRoutes.get("/get-solved-problems" ,authMiddleware,getAllProblemsSolvedByUser);
 
 export default problemsRoutes;
