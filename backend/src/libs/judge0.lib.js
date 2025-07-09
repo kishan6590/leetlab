@@ -9,6 +9,14 @@ export const getJudge0LanguageId = (language) => {
 
   return languageMap[language.toUpperCase()];
 };
+export const getlanguageName = (language_id) => {
+  const languageName = {
+    71: "PYTHON",
+    62: "JAVA",
+    63: "JAVASCRIPT",
+  };
+  return languageName[language_id]|| "Unknown";
+};
 
 export const submitBatch = async (submissions) => {
   const { data } = await axios.post(

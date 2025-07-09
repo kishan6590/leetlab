@@ -166,7 +166,7 @@ exports.Prisma.SubmissionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.TestcaseResultScalarFieldEnum = {
+exports.Prisma.TestCaseResultScalarFieldEnum = {
   id: 'id',
   submissionId: 'submissionId',
   testCase: 'testCase',
@@ -229,7 +229,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Problem: 'Problem',
   Submission: 'Submission',
-  TestcaseResult: 'TestcaseResult',
+  TestCaseResult: 'TestCaseResult',
   ProblemSolved: 'ProblemSolved'
 };
 

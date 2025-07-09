@@ -63,7 +63,7 @@ submission Submission[]
 solvedBy ProblemSolved[] 
 }
 model Submission{
-  id String @id @default(uuid())
+    id String @id @default(uuid())
     userId String
     problemId String
     sourceCode Json
@@ -80,10 +80,11 @@ model Submission{
 
     problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    testCases TestcaseResult[]
-}
+    testCases TestCaseResult[]
+    
+  }
 
-model TestcaseResult{
+model TestCaseResult{
   id String @id @default(uuid())
   submissionId String
   testCase Int
@@ -110,5 +111,5 @@ model ProblemSolved {
   updatedAt DateTime @updatedAt
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   problem Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
-  @@unique([problemId, userId])// making combination unique 
+ @@unique([userId, problemId])// making combination unique 
 }
