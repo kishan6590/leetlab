@@ -4,6 +4,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Toaster } from "react-hot-toast";
 
 import HomePage from "../src/page/HomePage";
 import LoginPage from "../src/page/LoginPage";
@@ -20,6 +21,7 @@ function App() {
             "linear-gradient(113deg, rgba(42, 123, 155, 1) 0%, rgba(34, 122, 78, 1) 66%)",
         }}
       >
+        <Toaster />
         <Routes>
           <Route
             path="/"
