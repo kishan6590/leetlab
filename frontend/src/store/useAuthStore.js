@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { axiosInstance } from "../lib/axios";
 
 export const useAuthStore = create((set) => ({
   authUser: null,
@@ -16,7 +15,7 @@ export const useAuthStore = create((set) => ({
 
   setIsLoggingUp: (value) => {
     set({ isLoggingUp: value });
-  },    
+  },
   setIsCheckingAuth: (value) => {
     set({ isCheckingAuth: value });
   },

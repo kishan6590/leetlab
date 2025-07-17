@@ -1,13 +1,19 @@
 import React, { useState } from "react";
+import { signupSchema } from "../schemas/userSchema";
+import { useAuthStore } from "../store/useAuthStore";
+import apiClient from "../../service/apiClient";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Code, CodeXml, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
-import { signupSchema } from "../schemas/userSchema";
 import Lottie from "lottie-react";
 import helloRobot from "../assets/hello-robot.json";
 import { Link } from "react-router-dom";
+
 function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const { isSigninUp } = useAuthStore;
+
   const {
     register,
     handleSubmit,
@@ -17,10 +23,13 @@ function SignUpPage() {
   });
 
   const onSubmit = async (data) => {
-    console.log("clicked");
-    console.log(data);
+    try {
+      await apiClient.signup(data);
+      console.log("signup data", data);
+    } catch (error) {
+      console.error(`signup failed`, error);
+    }
   };
-  console.log(errors);
   return (
     <div className="  h-screen grid lg:grid-cols-2  ">
       <div className="flex flex-col justify-center items-center p-6 sm:p-12 ">
@@ -125,10 +134,9 @@ function SignUpPage() {
             <button
               type="submit"
               className="btn btn-primary w-full"
-
-              // disabled={isSigninUp}
+              disabled={isSigninUp}
             >
-              {/* {isSigninUp ? (
+              {isSigninUp ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
                   Loading...
@@ -136,8 +144,6 @@ function SignUpPage() {
               ) : (
                 "Sign in"
               )}
-               */}
-              SignUp
             </button>
           </form>
 

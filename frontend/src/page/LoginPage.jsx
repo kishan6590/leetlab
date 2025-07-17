@@ -2,23 +2,32 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Code, CodeXml, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
-import { signupSchema } from "../schemas/userSchema";
+import { loginSchema } from "../schemas/userSchema";
 import Lottie from "lottie-react";
 import helloRobot from "../assets/hello-robot.json";
 import { Link } from "react-router-dom";
-function SignUpPage() {
+import { useAuthStore } from "../store/useAuthStore";
+import apiClient from "../../service/apiClient";
+function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+
+  const { isLoggingUp } = useAuthStore;
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(signupSchema),
+    resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data) => {
-    console.log("clicked");
-    console.log(data);
+    try {
+      await apiClient.login(data);
+
+      console.log("login data", data);
+    } catch (error) {
+      console.error(`Login in failed `, error);
+    }
   };
   console.log(errors);
   return (
@@ -101,19 +110,16 @@ function SignUpPage() {
             <button
               type="submit"
               className="btn btn-primary w-full"
-
-              // disabled={isSigninUp}
+              disabled={isLoggingUp}
             >
-              {/* {isSigninUp ? (
+              {isLoggingUp ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
                   Loading...
                 </>
               ) : (
-                "Sign in"
+                "Login"
               )}
-               */}
-              Login
             </button>
           </form>
 
@@ -136,4 +142,4 @@ function SignUpPage() {
   );
 }
 
-export default SignUpPage;
+export default LoginPage;
