@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
+import { Loader } from "lucide-react";
 function AdminRoute() {
   const { authUser, isCheckingAuth } = useAuthStore();
 
