@@ -12,7 +12,7 @@ import {
   CheckCircle2,
   Download,
 } from "lucide-react";
-import Editor from '@monaco-editor/react';
+import Editor from "@monaco-editor/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { replace, useNavigate } from "react-router-dom";
@@ -522,28 +522,28 @@ const CreateProblemForm = () => {
     const sampleData = sampleType === "DP" ? sampledpData : sampleStringProblem;
     replaceTags(sampleData.tags.map((tag) => tag));
     replaceTestCases(sampleData.testcases.map((tc) => tc));
-//reset the form with sample data 
+    //reset the form with sample data
     reset(sampleData);
   };
 
   return (
-    <div className="container mx-auto py-8 max-w-7xl">
-      <div className="card bg-base-100 shadow-xl">
+    <div className="container mx-auto py-8 max-w-7xl ">
+      <div className="card bg-base-100 shadow-xl ">
         <div className="card-body p-6 md:p-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 pb-4 border-b">
-            <h2 className="card-title text-2xl md:text-3xl flex items-center gap-3">
+          <div className="  flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 pb-4 border-b">
+            <h2 className=" card-title text-2xl md:text-3xl flex items-center gap-3">
               <FileText className="w-6 h-6 md:w-8 md:h-8 text-primary" />
               Create Problem
             </h2>
 
-            <div className="flex flex-col md:flex-row gap-3 mt-4 md:mt-0">
-              <div className="join">
+            <div className=" flex flex-col md:flex-row gap-3 mt-4 md:mt-0">
+              <div className="join ">
                 <button
                   type="button"
                   className={`btn join-item ${
                     sampleType === "DP" ? "btn-active" : ""
                   }`}
-                  onClick={() => setSampleType("array")}
+                  onClick={() => setSampleType("DP")}
                 >
                   DP Problem
                 </button>
@@ -568,9 +568,9 @@ const CreateProblemForm = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 ">
             {/* Basic Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
               <div className="form-control md:col-span-2">
                 <label className="label">
                   <span className="label-text text-base md:text-lg font-semibold">
@@ -592,7 +592,7 @@ const CreateProblemForm = () => {
                 )}
               </div>
 
-              <div className="form-control md:col-span-2">
+              <div className="form-control md:col-span-2 ">
                 <label className="label">
                   <span className="label-text text-base md:text-lg font-semibold">
                     Description
@@ -637,23 +637,23 @@ const CreateProblemForm = () => {
             </div>
 
             {/* Tags */}
-            <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-              <div className="flex items-center justify-between mb-4">
+            <div className="card bg-base-200 p-4 md:p-6 shadow-md ">
+              <div className="flex items-center justify-between mb-4 ">
                 <h3 className="text-lg md:text-xl font-semibold flex items-center gap-2">
                   <BookOpen className="w-5 h-5" />
                   Tags
                 </h3>
                 <button
                   type="button"
-                  className="btn btn-primary btn-sm"
+                  className="btn btn-primary btn-sm  "
                   onClick={() => appendTag("")}
                 >
                   <Plus className="w-4 h-4 mr-1" /> Add Tag
                 </button>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
                 {tagField.map((field, index) => (
-                  <div key={field.id} className="flex gap-2 items-center">
+                  <div key={field.id} className="flex gap-2 items-center ">
                     <input
                       type="text"
                       className="input input-bordered flex-1"
@@ -662,7 +662,7 @@ const CreateProblemForm = () => {
                     />
                     <button
                       type="button"
-                      className="btn btn-ghost btn-square btn-sm"
+                      className="btn btn-ghost btn-square btn-sm cursor-pointer "
                       onClick={() => removeTag(index)}
                       disabled={tagField.length === 1}
                     >
@@ -690,7 +690,12 @@ const CreateProblemForm = () => {
                 <button
                   type="button"
                   className="btn btn-primary btn-sm"
-                  onClick={() => appendTestCase({ input: "", output: "" })}
+                  onClick={() =>
+                    appendTestCase({
+                      input: "",
+                      output: "",
+                    })
+                  }
                 >
                   <Plus className="w-4 h-4 mr-1" /> Add Test Case
                 </button>
@@ -766,21 +771,21 @@ const CreateProblemForm = () => {
             </div>
 
             {/* Code Editor Sections */}
-            <div className="space-y-8">
+            <div className="space-y-8 ">
               {["JAVASCRIPT", "PYTHON", "JAVA"].map((language) => (
-                <div
+                <div 
                   key={language}
-                  className="card bg-base-200 p-4 md:p-6 shadow-md"
+                  className="card bg-base-200 p-4 md:p-6 shadow-md "
                 >
-                  <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
+                  <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2 ">
                     <Code2 className="w-5 h-5" />
                     {language}
                   </h3>
 
-                  <div className="space-y-6">
+                  <div className="space-y-6 ">
                     {/* Starter Code */}
-                    <div className="card bg-base-100 shadow-md">
-                      <div className="card-body p-4 md:p-6">
+                    <div className="card bg-base-100 shadow-md ">
+                      <div className="card-body p-4 md:p-6 ">
                         <h4 className="font-semibold text-base md:text-lg mb-4">
                           Starter Code Template
                         </h4>
