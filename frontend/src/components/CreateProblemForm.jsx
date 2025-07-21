@@ -17,6 +17,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { replace, useNavigate } from "react-router-dom";
 import { problemSchema } from "../schemas/problemSchema";
+import apiClient from "../../service/apiClient";
 
 //sample problem data
 
@@ -515,7 +516,18 @@ const CreateProblemForm = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const onSubmit = async (value) => {
-    console.log(value);
+    try {
+      setIsLoading(true);
+      const { createProblem } = apiClient;
+      const data = await createProblem(value);
+      console.log("data->", data);
+      toast.success(data.message || `Problem created successfully`);
+    } catch (error) {
+      console.log(error);
+      toast.error(`Error creating problem`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const loadSampleData = () => {
@@ -773,7 +785,7 @@ const CreateProblemForm = () => {
             {/* Code Editor Sections */}
             <div className="space-y-8 ">
               {["JAVASCRIPT", "PYTHON", "JAVA"].map((language) => (
-                <div 
+                <div
                   key={language}
                   className="card bg-base-200 p-4 md:p-6 shadow-md "
                 >
