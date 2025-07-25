@@ -2,6 +2,8 @@ import axios from "axios";
 import { useAuthStore } from "../src/store/useAuthStore";
 import toast from "react-hot-toast";
 import { useProblemStore } from "../src/store/useProblemStore";
+import { useExecutionStore } from "../src/store/useExecutionStore";
+import { useSubmissionStore } from "../src/store/useSubmissionStore";
 class ApiClient {
   constructor() {
     this.axiosInstance = axios.create({
@@ -101,8 +103,8 @@ class ApiClient {
     const { setIsProblemLoading, setPorblem } = useProblemStore.getState();
     try {
       setIsProblemLoading(true);
-      const res = await this.axiosInstance.post(`/problems/get-problems/${id}`);
-      setPorblem(res.data);
+      const res = await this.axiosInstance.get(`/problems/get-problem/${id}`);
+      setPorblem(res.data.problem);
       toast.success(res.data.message);
     } catch (error) {
       console.log(`Error getting Problem`, error);
@@ -113,7 +115,7 @@ class ApiClient {
   };
   getSolvedProblemByUser = async () => {
     const { setIsSolvedProblemsLoading, setSolvedProblems } =
-      useProblemStore().getState();
+      useProblemStore.getState();
     try {
       setIsSolvedProblemsLoading(true);
       await this.axiosInstance.get("/problems/get-solved-problem");
@@ -125,6 +127,95 @@ class ApiClient {
       setIsSolvedProblemsLoading(false);
     }
   };
+
+  //execution
+
+  executeCode = async (
+    source_code,
+    language_id,
+    stdin,
+    expected_outputs,
+    problemId
+  ) => {
+    const { setIsExecuting, setSubmission } = useExecutionStore.getState();
+    try {
+      setIsExecuting(true);
+      console.log(
+        "submission data ",
+        JSON.stringify({
+          source_code,
+          language_id,
+          stdin,
+          expected_outputs,
+          problemId,
+        })
+      );
+      const res = await this.axiosInstance.post("/execute-code", {
+        source_code,
+        language_id,
+        stdin,
+        expected_outputs,
+        problemId,
+      });
+      setSubmission(res.data);
+      console.log("res---", res.data);
+      toast.success(res.data?.message || "Code executed successfully");
+    } catch (error) {
+      console.log("Error executing code", error);
+      toast.error("Error executing code");
+    } finally {
+      setIsExecuting(false);
+    }
+  };
+
+  //submissions
+
+  getAllSubmissions = async () => {
+    const { setSubmissions, setIsLoading } = useSubmissionStore.getState();
+    try {
+      setIsLoading(true);
+
+      const res = await this.axiosInstance.get(
+        "/submissions/get-all-submission"
+      );
+      setSubmissions(res.data);
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log("Error getting submissions", error);
+      toast.error("Error getting submissions");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  getSubmissionForProblem = async (problemId) => {
+    
+    const {setSubmission} = useSubmissionStore.getState();
+    try { 
+      const res = await this.axiosInstance(
+        `/submissions/get-submission/${problemId}`
+
+      ); 
+      setSubmission(res.data.submission)
+      
+      
+    } catch (error) {
+      console.log("Error getting submissions for problem", error);
+      toast.error("Error getting submissions for problem"); 
+    }
+  };
+  getSubmissionCountForProblem = async ()=>{
+
+    const {setSubmissionCount} = useSubmissionStore.getState();
+    try {
+      const res = await this.axiosInstance.get(`/submission/get-submission-count/${problemId}`); 
+setSubmissionCount(res.data.count)
+    } catch (error) {
+      console.log("Error getting submission count for problem", error);
+      toast.error("Error getting submission count for problem");
+      
+    }
+  }
 }
 
 const apiClient = new ApiClient();

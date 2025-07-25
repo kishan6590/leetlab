@@ -8,6 +8,7 @@ export const useProblemStore = create((set) => ({
   isProblemLoading: false,
   isSolvedProblemsLoading: false,
 
+  
   setProblems: (data) => {
     set({ problems: data.problems });
   },
