@@ -25,11 +25,22 @@ import { useExecutionStore } from "../store/useExecutionStore";
 import { getLanguageId } from "../lib/lang.js";
 import SubmissionResults from "../components/Submission";
 import { useSubmissionStore } from "../store/useSubmissionStore.js";
+import SubmissionsList from "../components/SubmissionList.jsx";
+
 // import SubmissionsList from "../components/SubmissionList";
 function ProblemPage() {
-   const {submission:submissions, isLoading:isSubmissionsLoading, } = useSubmissionStore(); 
+  const {
+    submission: submissions,
+    isLoading: isSubmissionsLoading,
+    submissionCount,
+  } = useSubmissionStore();
   const { id } = useParams();
-  const { getProblemById, executeCode } = apiClient;
+  const {
+    getProblemById,
+    executeCode,
+    getSubmissionForProblem,
+    getSubmissionCountForProblem,
+  } = apiClient;
   const { problem, isProblemLoading } = useProblemStore();
   const [code, setCode] = useState("");
 
@@ -43,7 +54,10 @@ function ProblemPage() {
 
   useEffect(() => {
     getProblemById(id);
-  }, [id]);
+
+    // getSubmissionCountForProblem(id);
+    console.log("working");
+  }, [id, submission]);
 
   useEffect(() => {
     console.log("problem----", problem);
@@ -57,8 +71,14 @@ function ProblemPage() {
       );
     }
   }, [problem, selectedLanguage]);
+  useEffect(() => {
+    if (activeTab === "submissions" && id) {
+      getSubmissionForProblem(id);
+    }
+  }, [activeTab, id]);
 
-  let submissionCount = 9;
+  console.log("submission", submission);
+  // let submissionCount = 9;
   function handleLanguageChange(e) {
     const lang = e.target.value;
 

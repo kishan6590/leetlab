@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Bookmark,
   PencilIcon,
@@ -10,8 +10,11 @@ import {
 import { Link } from "react-router-dom";
 
 import { useAuthStore } from "../store/useAuthStore";
+import { useAction } from "../store/useActions";
+import apiClient from "../../service/apiClient";
+import { useProblemStore } from "../store/useProblemStore";
 
-function ProblemTable({ problems }) {
+function ProblemTable() {
   const { authUser } = useAuthStore();
   const difficulties = ["EASY", "MEDIUM", "HARD"];
 
@@ -20,12 +23,18 @@ function ProblemTable({ problems }) {
   const [selectedTag, setSelectedTag] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
 
+  const { isDeletingProblem } = useAction();
+  const { onDeleteProblem, getAllProblems } = apiClient;
+
+  const { problems, isProblemsLoading } = useProblemStore();
+
   const allTags = useMemo(() => {
     if (!Array.isArray(problems)) return [];
 
     const tagsSet = new Set();
 
     problems.forEach((p) => p.tags?.forEach((t) => tagsSet.add(t)));
+    console.log("tagsset->", tagsSet);
     return Array.from(tagsSet);
   }, [problems]);
 
@@ -54,7 +63,17 @@ function ProblemTable({ problems }) {
     );
   }, [filteredProblems, currentPage]);
 
-  const handleDelete = () => {};
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this problem?"
+    );
+    if (!confirmDelete) return;
+
+    const res = await onDeleteProblem(id);
+    if (res) {
+      getAllProblems();
+    }
+  };
   const handleAddToPlaylist = () => {};
 
   return (
@@ -170,7 +189,12 @@ function ProblemTable({ problems }) {
                               onClick={() => handleDelete(problem.id)}
                               className="btn btn-sm btn-error"
                             >
-                              <TrashIcon className="w-4 h-4 text-white" />
+                              {" "}
+                              {isDeletingProblem ? (
+                                <Loader2 className="animate-spin h-4 w-4 " />
+                              ) : (
+                                <TrashIcon className="w-4 h-4 text-white" />
+                              )}
                             </button>
                             <button disabled className="btn btn-sm btn-warning">
                               <PencilIcon className="w-4 h-4 text-white" />

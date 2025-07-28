@@ -1,0 +1,22 @@
+export const usePlaylistStore = create((set) => ({
+  playlists: [],
+  currentPlaylist: null,
+  isLoading: false,
+  error: null,
+
+  setPlaylists: (data) => set({ playlists: data }),
+  setPlaylistsOnDelete: (playlistId) => {
+    set((state) => ({
+      playlists: state.playlists.filter(
+        (playlist) => playlist.id !== playlistId
+      ),
+    }));
+  },
+
+  setPlaylistOnCreating: (data) => {
+    set({ playlists: [...playlists, data] });
+  },
+  setCurrentPlaylist: (data) => set({ currentPlaylist: data }),
+  setIsLoading: (value) => set({ isLoading: value }),
+  setError: (value) => set({ error: value }),
+}));

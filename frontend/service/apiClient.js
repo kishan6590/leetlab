@@ -4,6 +4,10 @@ import toast from "react-hot-toast";
 import { useProblemStore } from "../src/store/useProblemStore";
 import { useExecutionStore } from "../src/store/useExecutionStore";
 import { useSubmissionStore } from "../src/store/useSubmissionStore";
+import { useAction } from "../src/store/useActions";
+import { LeafyGreen } from "lucide-react";
+import { usePlaylistStore } from "../src/store/usePlaylistStore";
+import { use } from "react";
 class ApiClient {
   constructor() {
     this.axiosInstance = axios.create({
@@ -176,7 +180,7 @@ class ApiClient {
       setIsLoading(true);
 
       const res = await this.axiosInstance.get(
-        "/submissions/get-all-submission"
+        "/submission/get-all-submissions"
       );
       setSubmissions(res.data);
       toast.success(res.data.message);
@@ -189,33 +193,159 @@ class ApiClient {
   };
 
   getSubmissionForProblem = async (problemId) => {
-    
-    const {setSubmission} = useSubmissionStore.getState();
-    try { 
+    const { setSubmission } = useSubmissionStore.getState();
+    try {
       const res = await this.axiosInstance(
-        `/submissions/get-submission/${problemId}`
-
-      ); 
-      setSubmission(res.data.submission)
-      
-      
+        `/submission/get-submissions/${problemId}`
+      );
+      setSubmission(res.data.submissions);
+      console.log("setSub", res.data.submissions);
     } catch (error) {
       console.log("Error getting submissions for problem", error);
-      toast.error("Error getting submissions for problem"); 
+      toast.error("Error getting submissions for problem");
     }
   };
-  getSubmissionCountForProblem = async ()=>{
-
-    const {setSubmissionCount} = useSubmissionStore.getState();
+  getSubmissionCountForProblem = async (problemId) => {
+    const { setSubmissionCount } = useSubmissionStore.getState();
     try {
-      const res = await this.axiosInstance.get(`/submission/get-submission-count/${problemId}`); 
-setSubmissionCount(res.data.count)
+      const res = await this.axiosInstance.get(
+        `/submission/get-submissions-count/${problemId}`
+      );
+      console.log("count-", res.data);
+      setSubmissionCount(res.data.count);
     } catch (error) {
       console.log("Error getting submission count for problem", error);
       toast.error("Error getting submission count for problem");
-      
     }
-  }
+  };
+  //delete problem
+
+  onDeleteProblem = async (id) => {
+    const { setIsDeletingProblem } = useAction.getState();
+    try {
+      setIsDeletingProblem(true);
+      const res = await this.axiosInstance.delete(
+        `/problems/delete-problem/${id}`
+      );
+      console.log("del", res);
+      toast.success(res.data.message);
+      return res.data.success;
+    } catch (error) {
+      console.log(`Error deleting problem`, error);
+      toast.error(`Error deleting problem`);
+    } finally {
+      setIsDeletingProblem(false);
+    }
+  };
+  //playlist
+
+  createPlaylist = async (playlistData) => {
+    const { setIsLoading, setPlaylistOnCreating } = usePlaylistStore();
+    try {
+      setIsLoading(true);
+      const res = await this.axiosInstance.post(
+        "playlist/create-playlist",
+        playlistData
+      );
+
+      setPlaylistOnCreating(res.data.playList);
+      toast.success("Playlist created successfully");
+      return res.data.playList;
+    } catch (error) {
+      console.error("Error creating playlist", error);
+      toast.error(error.response?.data?.error || "Error creating playlist");
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  getAllPlaylists = async () => {
+    const { setIsLoading, setPlaylistOnCreating } = usePlaylistStore();
+    try {
+      setIsLoading(true);
+      const res = await this.axiosInstance.get("/playlist");
+      setPlaylistOnCreating(res.data.playLists);
+    } catch {
+      console.error("Error fetching playlists", error);
+      toast.error("Failed to fetch plyalists");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  getPlaylistDetails = async (playListId) => {
+    const { setIsLoading, setCurrentPlaylist } = usePlaylistStore();
+
+    try {
+      setIsLoading(true);
+      const res = await this.axiosInstance.get(`/playlist/${playlistId}`);
+
+      setCurrentPlaylist(res.data.playList);
+    } catch (error) {
+      console.error(`Error fetching playlist details`, error);
+
+      toast.error(`Failed to fetch playlist details`);
+    } finally {
+      setIsLoading(false);
+    }
+    addProblemToPlaylist = async () => {};
+  };
+  addProblemToPlaylist = async (playlistId, problemIds) => {
+    const { setIsLoading, setCurrentPlaylist, currentPlaylist } =
+      usePlaylistStore();
+    try {
+      setIsLoading(true);
+      const res = await this.axiosInstance.post(
+        `/playlist/${playlistId}/add-problem`,
+        { problemIds }
+      );
+      //refresh playlist details if it is the current playlist
+      if (currentPlaylist?.id === playlistId) {
+        await this.getPlaylistDetails(playlistId);
+      }
+    } catch (error) {
+      console.error(`Error adding problem to playlist`, error);
+      toast.error("Failed to add problem to playlist");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  removeProblemFromPlaylist = async (playlistId, problemIds) => {
+    const { setIsLoading, setCurrentPlaylist, currentPlaylist } =
+      usePlaylistStore();
+    try {
+      setIsLoading(true);
+      const res = await this.axiosInstance.post(
+        `/playlist/${playlistId}/remove-problems`,
+        { problemIds }
+      );
+
+      toast.success("Problem removed from playlist successfully");
+      //refresh playlist details if it is the current playlist
+      if (currentPlaylist?.id === playlistId) {
+        await this.getPlaylistDetails(playlistId);
+      }
+    } catch (error) {
+      console.error(`Error removing problem from playlist`, error);
+      toast.error("Failed to remove problem from playlist");
+    } finally {
+      setIsLoading(false);
+    }
+    deletePlaylist = async (playlistId) => {
+      const { setIsLoading, setPlaylistsOnDelete } = usePlaylistStore();
+      try {
+        setIsLoading(true);
+        await this.axiosInstance.delete(`/playlist/${playlistId}`);
+        await setPlaylistsOnDelete(playlistId);
+        toast.success("Playlist deleted successfully");
+      } catch (error) {
+        console.error(`Error deleting playlist`, error);
+        toast.error("Failed to delete playlist");
+      }finally {
+        setIsLoading(false);
+      }
+    };
+  };
 }
 
 const apiClient = new ApiClient();
