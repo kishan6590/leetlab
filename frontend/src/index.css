@@ -1,2 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 @plugin "daisyui";
+
+@theme {
+  --font-raleway: "Raleway", "sans-serif";
+}
+
+.color-empty {
+  /* fill: #1e293b;  */
+  fill: red;
+}
+
+.color-filled {
+  /* fill: #22c55e;  */
+  fill: yellow;
+}

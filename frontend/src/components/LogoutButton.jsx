@@ -7,7 +7,7 @@ function LogoutButton({ children }) {
     await apiClient.logout();
   };
   return (
-    <button className="btn btn-primary " onClick={onLogout}>
+    <button className="btn bg-[#065f46] " onClick={onLogout}>
       {children}
     </button>
   );

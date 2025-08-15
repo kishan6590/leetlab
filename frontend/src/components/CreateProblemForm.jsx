@@ -553,7 +553,7 @@ const CreateProblemForm = () => {
                 <button
                   type="button"
                   className={`btn join-item ${
-                    sampleType === "DP" ? "btn-active" : ""
+                    sampleType === "DP" ?"bg-[#1c1917]" : "bg-[#27272a]"
                   }`}
                   onClick={() => setSampleType("DP")}
                 >
@@ -562,7 +562,7 @@ const CreateProblemForm = () => {
                 <button
                   type="button"
                   className={`btn join-item ${
-                    sampleType === "string" ? "btn-active" : ""
+                    sampleType === "string" ? "bg-[#1c1917]" : "bg-[#27272a]"
                   }`}
                   onClick={() => setSampleType("string")}
                 >
@@ -571,7 +571,7 @@ const CreateProblemForm = () => {
               </div>
               <button
                 type="button"
-                className="btn btn-secondary gap-2"
+                className="btn bg-[#083344] gap-2"
                 onClick={loadSampleData}
               >
                 <Download className="w-4 h-4" />
@@ -657,7 +657,7 @@ const CreateProblemForm = () => {
                 </h3>
                 <button
                   type="button"
-                  className="btn btn-primary btn-sm  "
+                  className="btn bg-[#065f46] btn-sm  "
                   onClick={() => appendTag("")}
                 >
                   <Plus className="w-4 h-4 mr-1" /> Add Tag
@@ -701,7 +701,7 @@ const CreateProblemForm = () => {
                 </h3>
                 <button
                   type="button"
-                  className="btn btn-primary btn-sm"
+                  className="btn bg-[#065f46] btn-sm"
                   onClick={() =>
                     appendTestCase({
                       input: "",
@@ -991,7 +991,7 @@ const CreateProblemForm = () => {
             </div>
 
             <div className="card-actions justify-end pt-4 border-t">
-              <button type="submit" className="btn btn-primary btn-lg gap-2">
+              <button type="submit" className="btn bg-[#065f46] btn-lg gap-2">
                 {isLoading ? (
                   <span className="loading loading-spinner text-white"></span>
                 ) : (

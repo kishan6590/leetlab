@@ -7,13 +7,14 @@ import {
   Plus,
   Calculator,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 
 import { useAuthStore } from "../store/useAuthStore";
 import { useAction } from "../store/useActions";
 import apiClient from "../../service/apiClient";
 import { useProblemStore } from "../store/useProblemStore";
-
+import AddtoPlaylist from "./AddToPlaylist.jsx";
+import CreatePlaylistModel from "./CreatePlaylistModel.jsx";
 function ProblemTable() {
   const { authUser } = useAuthStore();
   const difficulties = ["EASY", "MEDIUM", "HARD"];
@@ -24,10 +25,14 @@ function ProblemTable() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { isDeletingProblem } = useAction();
-  const { onDeleteProblem, getAllProblems } = apiClient;
+  const { onDeleteProblem, getAllProblems, createPlaylist } = apiClient;
 
   const { problems, isProblemsLoading } = useProblemStore();
+  const [isCreateModelOpen, setIsCreateModelOpen] = useState(false);
 
+  const [isAddToPlaylistModelOpen, setIsAddToPlaylistModelOpen] =
+    useState(false);
+  const [selectedProblemId, setSelectedProblemId] = useState(null);
   const allTags = useMemo(() => {
     if (!Array.isArray(problems)) return [];
 
@@ -74,14 +79,25 @@ function ProblemTable() {
       getAllProblems();
     }
   };
-  const handleAddToPlaylist = () => {};
+  const handleCreatePlaylist = async (data) => {
+    await createPlaylist(data);
+  };
+  const handleAddToPlaylist = (problemId) => {
+    setSelectedProblemId(problemId);
+    setIsAddToPlaylistModelOpen(true);
+  };
 
   return (
-    <div className="w-full  max-w-6xl mx-auto mt-10 border-2">
+    <div className="w-full  max-w-6xl mx-auto mt-10 ">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Problems</h2>
-        <button className="btn btn-primary gap-2" onClick={() => {}}>
-          <Plus className="w-4 h-4" />
+        <button
+          className="btn bg-emerald-800 gap-2"
+          onClick={() => {
+            setIsCreateModelOpen(true);
+          }}
+        >
+          <Plus className="w-4 h-4 " />
           Create Playlist
         </button>
       </div>
@@ -90,7 +106,8 @@ function ProblemTable() {
         <input
           type="text"
           placeholder="Search by title"
-          className="input input-bordered w-full md:w-1/3 bg-base-200 "
+          // bg-base-200
+          className="input input-bordered w-full md:w-1/3 bg-base-200  "
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -121,9 +138,9 @@ function ProblemTable() {
           ))}
         </select>
       </div>
-      <div className="overflow-x-auto rounded-xl shadow-md">
-        <table className="table table-zebra table-lg bg-base-200 text-base-content border-4">
-          <thead className="bg-base-200">
+      <div className="overflow-x-auto rounded-xl shadow-md ">
+        <table className="table   text-base-content ">
+          <thead className="bg-[#030712]">
             <tr>
               <th>Solved</th>
               <th>Title</th>
@@ -132,14 +149,14 @@ function ProblemTable() {
               <th>Actions </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {paginatedProblems.length > 0 ? (
               paginatedProblems.map((problem) => {
                 const isSolved = problem.solvedBy.some(
                   (user) => user.userId === authUser?.id
                 );
                 return (
-                  <tr key={problem.id}>
+                  <tr key={problem.id} className=" bg-[#030712]/90">
                     <td>
                       <input
                         type="checkbox"
@@ -189,7 +206,6 @@ function ProblemTable() {
                               onClick={() => handleDelete(problem.id)}
                               className="btn btn-sm btn-error"
                             >
-                              {" "}
                               {isDeletingProblem ? (
                                 <Loader2 className="animate-spin h-4 w-4 " />
                               ) : (
@@ -244,6 +260,17 @@ function ProblemTable() {
           Next
         </button>
       </div>
+      <CreatePlaylistModel
+        isOpen={isCreateModelOpen}
+        onClose={() => setIsCreateModelOpen(false)}
+        onSubmit={handleCreatePlaylist}
+      />
+
+      <AddtoPlaylist
+        isOpen={isAddToPlaylistModelOpen}
+        onClose={() => setIsAddToPlaylistModelOpen(false)}
+        problemId={selectedProblemId}
+      />
     </div>
   );
 }

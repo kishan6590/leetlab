@@ -35,6 +35,7 @@ function CreatePlaylistModel({ isOpen, onClose, onSubmit }) {
               <span className="label-text font-medium">Playlist Name</span>
             </label>
             <input
+            
               type="text"
               className="input input-bordered w-full"
               placeholder="Enter playlist name"

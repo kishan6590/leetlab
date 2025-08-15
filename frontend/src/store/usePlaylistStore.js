@@ -1,3 +1,4 @@
+import { create } from "zustand";
 export const usePlaylistStore = create((set) => ({
   playlists: [],
   currentPlaylist: null,
@@ -14,7 +15,9 @@ export const usePlaylistStore = create((set) => ({
   },
 
   setPlaylistOnCreating: (data) => {
-    set({ playlists: [...playlists, data] });
+    set((state) => ({
+      playlists: [...state.playlists, data],
+    }));
   },
   setCurrentPlaylist: (data) => set({ currentPlaylist: data }),
   setIsLoading: (value) => set({ isLoading: value }),

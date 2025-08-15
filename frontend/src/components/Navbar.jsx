@@ -3,47 +3,62 @@ import { User, Code, LogOut } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
-
+import logo from "../assets/logo.png";
 function Navbar() {
   const { authUser } = useAuthStore();
 
   console.log("AUTH_USER", authUser);
 
+  const getInitialName = () => {
+    const name = authUser?.name;
+    let firstLetter = name?.charAt(0).toUpperCase();
+    console.log("first", firstLetter);
+    return firstLetter;
+  };
+  // border border-gray-200/10
   return (
-    <nav className="sticky top-0 z-50 w-full py-5">
-      <div className="flex w-full justify-between mx-auto max-w-4xl bg-black/15 shadow-lg shadow-neutral-600/5 backdrop-blur-lg border border-gray-200/10 p-4 rounded-2xl">
-        {/* Logo Section */}
-        <Link to="/" className="flex items-center gap-3 cursor-pointer">
+    <nav className="sticky top-0 z-50 w-full py-5  ">
+      <div className="flex w-full justify-between  mx-auto max-w-[980px] bg-[#0a0a0a]/5 shadow-sm shadow-teal-800 backdrop-blur-lg  px-4 rounded-2xl  ">
+        <Link to="/" className=" cursor-pointer ">
           <img
-            src="/leetlab.svg"
-            className="h-18 w-18 bg-primary/20 text-primary border-none px-2 py-2 rounded-full"
+            src="/procoder.png"
+            className="    text-white px-2 py-2 rounded-full w-60 "
           />
-          <span className="text-lg md:text-2xl font-bold tracking-tight text-white hidden md:block">
-            Leetlab
-          </span>
         </Link>
 
         {/* User Profile and Dropdown */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-8 border-2 border-pink-800">
+          <Link to="/home">Home</Link>
+          <Link>Probl</Link>
+          <Link>Home</Link>
           <div className="dropdown dropdown-end">
             <label
               tabIndex={0}
               className="btn btn-ghost btn-circle avatar flex flex-row "
             >
               <div className="w-10 rounded-full ">
-                <img
-                  src={
-                    authUser?.image ||
-                    "https://avatar.iran.liara.run/public/boy"
-                  }
-                  alt="User Avatar"
-                  className="object-cover"
-                />
+                {authUser?.image ? (
+                  <img
+                    src={
+                      authUser?.image ||
+                      "https://avatar.iran.liara.run/public/boy"
+                    }
+                    alt="avatar"
+                  />
+                ) : (
+                  <div className="bg-[#99f6e4] text-black flex items-center justify-center w-full h-full rounded-full">
+                    {getInitialName()}
+                  </div>
+                )}
               </div>
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 space-y-3"
+              className="menu menu-sm  dropdown-content mt-3 z-[1] p-2 shadow  rounded-box w-52 space-y-3"
+              style={{
+                background:
+                  "linear-gradient(to bottom right,#09090b 5% ,#171717 40%,#1f2937)",
+              }}
             >
               {/* Admin Option */}
 

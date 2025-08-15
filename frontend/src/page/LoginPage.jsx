@@ -31,7 +31,7 @@ function LoginPage() {
   };
   console.log(errors);
   return (
-    <div className="  h-screen grid lg:grid-cols-2  ">
+    <div className="  h-screen grid lg:grid-cols-2  border-2 border-amber-300 ">
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8 px-5 shadow-2xl pt-5 pb-5  ">
           {/* Logo */}

@@ -15,6 +15,7 @@ import {
   Users,
   ThumbsUp,
   Home,
+  SquareCode,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
@@ -26,6 +27,7 @@ import { getLanguageId } from "../lib/lang.js";
 import SubmissionResults from "../components/Submission";
 import { useSubmissionStore } from "../store/useSubmissionStore.js";
 import SubmissionsList from "../components/SubmissionList.jsx";
+import Navbar from "../components/Navbar.jsx";
 
 // import SubmissionsList from "../components/SubmissionList";
 function ProblemPage() {
@@ -90,7 +92,7 @@ function ProblemPage() {
     switch (activeTab) {
       case "description":
         return (
-          <div className="prose max-w-none">
+          <div className="prose max-w-none ">
             <p className="text-lg mb-6">{problem?.description}</p>
 
             {problem?.examples && (
@@ -193,35 +195,50 @@ function ProblemPage() {
     }
   };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-base-300 to-base-200 max-w-7xl w-full">
-      <nav className="navbar bg-base-100 shadow-lg px-4">
-        <div className="flex-1 gap-2">
-          <Link to={"/"} className="flex items-center gap-2 text-primary">
+    <div
+      className="min-h-screen max-w-7xl w-full border-2 border-gray-200/10 mx-auto"
+      style={{
+        background:
+          "linear-gradient(to bottom right,#09090b 5% ,#171717 40%,#1f2937)",
+
+        // backgroundRepeat: "no-repeat"
+      }}
+    >
+      <Navbar />
+      <nav className="shadow-lg shadow-stone-800  border-b-1 p-4 mx-5 flex justify-between items-center   text-4xl ">
+        <div className="flex items-center gap-5">
+          <SquareCode className="w-10 h-10" />
+          <h1 className="font-raleway font-semibold">{problem?.title}</h1>
+        </div>
+        {/* <div className="flex-1 gap-2"> */}
+        {/* <Link to={"/"} className="flex items-center gap-2 text-primary">
             <Home className="w-6 h-6" />
             <ChevronRight className="w-4 h-4" />
-          </Link>
+          </Link> */}
+        {/*  
           <div className="mt-2">
             {/* <h1 className="text-xl font-bold">{problem.title}</h1> */}
-            <div className="flex items-center gap-2 text-sm text-base-content/70 mt-5">
-              <Clock className="w-4 h-4" />
-              <span>
+        {/* <div className="flex items-center gap-2 text-sm text-base-content/70 mt-5"> */}
+        {/* <Clock className="w-4 h-4" /> */}
+        {/* <span>
                 Updated{" "}
-                {/* {new Date(problem.createdAt).toLocaleString("en-US", {
+                {new Date(problem.createdAt).toLocaleString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
-                })} */}
-              </span>
-              <span className="text-base-content/30">•</span>
-              <Users className="w-4 h-4" />
-              <span>{submissionCount} Submissions</span>
-              <span className="text-base-content/30">•</span>
-              <ThumbsUp className="w-4 h-4" />
-              <span>95% Success Rate</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex-none gap-4">
+                })}
+              </span> */}
+        {/* <span className="text-base-content/30">•</span> */}
+        {/* <Users className="w-4 h-4" /> */}
+        {/* <span>{submissionCount} Submissions</span> */}
+        {/* <span className="text-base-content/30">•</span> */}
+        {/* <ThumbsUp className="w-4 h-4" /> */}
+        {/* <span>95% Success Rate</span> */}
+        {/* </div> */}
+        {/* </div> */}
+        {/* </div> */}
+
+        <div className="flex-none gap-4 ">
           <button
             className={`btn btn-ghost btn-circle ${
               isBookmarked ? "text-primary" : ""
@@ -246,11 +263,23 @@ function ProblemPage() {
           </select>
         </div>
       </nav>
-      <div className="container mx-auto p-4">
-        <div className=" grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="card bg-base-100 shadow-xl">
-            <div className="card-body p-0">
-              <div className="tabs tabs-bordered">
+      <div
+        className=" mx-4 py-4  "
+        style={{
+          background:
+            "linear-gradient(to bottom right,#09090b 5% ,#171717 40%,#1f2937)",
+        }}
+      >
+        <div className=" grid grid-cols-1 lg:grid-cols-2  gap-6  ">
+          <div
+            className="card bg-base-100 border-l border-[#1f2937] shadow-xl   max-h-[650px]  relative "
+            style={{
+              background:
+                "linear-gradient(to bottom right,#09090b 5% ,#171717 40%,#1f2937)",
+            }}
+          >
+            <div className="card-body p-0 ">
+              <div className="tabs tabs-bordered   inset-x-0 top-0">
                 <button
                   className={`tab gap-2 ${
                     activeTab === "description" ? "tab-active" : ""
@@ -289,12 +318,20 @@ function ProblemPage() {
                 </button>
               </div>
 
-              <div className="p-6">{renderTabContent()} </div>
+              <div className="p-6   max-h-[600px]  overflow-y-auto  ">
+                {renderTabContent()}{" "}
+              </div>
             </div>
           </div>
-          <div className="card bg-base-100  shadow-xl">
+          <div className="card bg-base-100  shadow-xl ">
             <div className="card-body p-0">
-              <div className="tabs tabs-border">
+              <div
+                className="tabs tabs-border"
+                style={{
+                  background:
+                    "linear-gradient(to bottom right,#09090b 5% ,#171717 40%,#1f2937)",
+                }}
+              >
                 <button className="tab tab-active gap-2">
                   <Terminal className="w-4 h-4" /> Code Editor
                 </button>
@@ -321,11 +358,18 @@ function ProblemPage() {
           </div>
         </div>
       </div>
-
-      <div className="p-4 border-t border-base-300 bg-base-200">
+      <div
+        className="p-4 border-t border-base-300 bg-base-200 mx-4 "
+        style={{
+          background:
+            "linear-gradient(to bottom right,#09090b 5% ,#171717 40%,#1f2937)",
+        }}
+      >
         <div className="flex justify-between items-center">
           <button
-            className={`btn btn-primary gap-2 ${isExecuting ? "loading" : ""}`}
+            className={`btn bg-[#9a3412]/60 gap-2 ${
+              isExecuting ? "loading" : ""
+            }`}
             onClick={handleRunCode}
             disabled={isExecuting}
           >
@@ -335,29 +379,39 @@ function ProblemPage() {
           <button className="btn btn-success gap-2">Submit Solution</button>
         </div>
       </div>
-
-      <div className="card bg-base-100 shadow-xl mt-6">
-        <div className="card-body">
+      <div className="card bg-base-100 shadow-xl mt-6 mx-4">
+        <div
+          className="card-body rounded-lg"
+          style={{
+            background:
+              "linear-gradient(to bottom right,#09090b 5% ,#171717 40%,#1f2937)",
+          }}
+        >
           {submission ? (
             <SubmissionResults submission={submission.submission} />
           ) : (
             <>
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-6 ">
                 <h3 className="text-xl font-bold">Test Cases</h3>
               </div>
               <div className="overflow-x-auto">
-                <table className="table table-zebra w-full">
+                <table className="table  w-full">
                   <thead>
-                    <tr>
+                    <tr className="bg-[#475569]/20 ">
                       <th>Input</th>
                       <th>Expected Output</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody
+                    style={{
+                      background:
+                        "linear-gradient(to bottom right,#09090b/50 5% ,#171717/50 40%,#1f2937/50)",
+                    }}
+                  >
                     {testcases.map((testCase, index) => (
-                      <tr key={index}>
-                        <td className="font-mono">{testCase.input}</td>
-                        <td className="font-mono">{testCase.output}</td>
+                      <tr key={index} className="bg-[#475569]/20 ">
+                        <td className="font-mono ">{testCase.input}</td>
+                        <td className="font-mono  ">{testCase.output}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -367,6 +421,7 @@ function ProblemPage() {
           )}
         </div>
       </div>
+      īīī
     </div>
   );
 }

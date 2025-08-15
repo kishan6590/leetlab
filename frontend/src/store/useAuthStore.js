@@ -5,6 +5,7 @@ export const useAuthStore = create((set) => ({
   isSigninUp: false,
   isLoggingUp: false,
   isCheckingAuth: false,
+  isLoading: true,
 
   setAuthUser: (user) => {
     set({ authUser: user });
@@ -18,5 +19,8 @@ export const useAuthStore = create((set) => ({
   },
   setIsCheckingAuth: (value) => {
     set({ isCheckingAuth: value });
+  },
+  setIsLoading: (value) => {
+    set({ isLoading: value });
   },
 }));

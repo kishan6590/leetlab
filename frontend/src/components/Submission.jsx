@@ -32,7 +32,7 @@ const SubmissionResults = ({ submission }) => {
       {/* Overall Status */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="card bg-base-200 shadow-lg">
-          <div className="card-body p-4">
+          <div className="card-body p-4 ">
             <h3 className="card-title text-sm">Status</h3>
             <div
               className={`text-lg font-bold ${

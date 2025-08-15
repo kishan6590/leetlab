@@ -31,6 +31,7 @@ class ApiClient {
       setAuthUser(null);
     } finally {
       setIsCheckingAuth(false);
+      // setIsLoading(false);
     }
   }
 
@@ -122,11 +123,11 @@ class ApiClient {
       useProblemStore.getState();
     try {
       setIsSolvedProblemsLoading(true);
-      await this.axiosInstance.get("/problems/get-solved-problem");
-      setSolvedProblems(res.data);
+      const res = await this.axiosInstance.get("/problems/get-solved-problems");
+      setSolvedProblems(res.data.problems);
     } catch (error) {
       console.log(`Error getting solved problems`, error);
-      toast.error(`Error getting solved problems  `);
+      toast.error(`Error getting solved problems`);
     } finally {
       setIsSolvedProblemsLoading(false);
     }
@@ -240,7 +241,7 @@ class ApiClient {
   //playlist
 
   createPlaylist = async (playlistData) => {
-    const { setIsLoading, setPlaylistOnCreating } = usePlaylistStore();
+    const { setIsLoading, setPlaylistOnCreating } = usePlaylistStore.getState();
     try {
       setIsLoading(true);
       const res = await this.axiosInstance.post(
@@ -248,9 +249,10 @@ class ApiClient {
         playlistData
       );
 
-      setPlaylistOnCreating(res.data.playList);
+      setPlaylistOnCreating(res.data.playlist);
       toast.success("Playlist created successfully");
-      return res.data.playList;
+      console.log("res.data.playList", res.data.playlist);
+      return res.data.playlist;
     } catch (error) {
       console.error("Error creating playlist", error);
       toast.error(error.response?.data?.error || "Error creating playlist");
@@ -261,11 +263,14 @@ class ApiClient {
   };
 
   getAllPlaylists = async () => {
-    const { setIsLoading, setPlaylistOnCreating } = usePlaylistStore();
+    const { setIsLoading, setPlaylistOnCreating, setPlaylists } =
+      usePlaylistStore.getState();
     try {
       setIsLoading(true);
       const res = await this.axiosInstance.get("/playlist");
-      setPlaylistOnCreating(res.data.playLists);
+      console.log("alply", res.data.playlists);
+      // setPlaylistOnCreating(res.data.playlists);
+      setPlaylists(res.data.playlists);
     } catch {
       console.error("Error fetching playlists", error);
       toast.error("Failed to fetch plyalists");
@@ -273,8 +278,8 @@ class ApiClient {
       setIsLoading(false);
     }
   };
-  getPlaylistDetails = async (playListId) => {
-    const { setIsLoading, setCurrentPlaylist } = usePlaylistStore();
+  getPlaylistDetails = async (playlistId) => {
+    const { setIsLoading, setCurrentPlaylist } = usePlaylistStore.getState();
 
     try {
       setIsLoading(true);
@@ -288,11 +293,10 @@ class ApiClient {
     } finally {
       setIsLoading(false);
     }
-    addProblemToPlaylist = async () => {};
   };
   addProblemToPlaylist = async (playlistId, problemIds) => {
     const { setIsLoading, setCurrentPlaylist, currentPlaylist } =
-      usePlaylistStore();
+      usePlaylistStore.getState();
     try {
       setIsLoading(true);
       const res = await this.axiosInstance.post(
@@ -303,6 +307,7 @@ class ApiClient {
       if (currentPlaylist?.id === playlistId) {
         await this.getPlaylistDetails(playlistId);
       }
+      toast.success("Problem added to playlist successfully");
     } catch (error) {
       console.error(`Error adding problem to playlist`, error);
       toast.error("Failed to add problem to playlist");
@@ -312,7 +317,7 @@ class ApiClient {
   };
   removeProblemFromPlaylist = async (playlistId, problemIds) => {
     const { setIsLoading, setCurrentPlaylist, currentPlaylist } =
-      usePlaylistStore();
+      usePlaylistStore.getState();
     try {
       setIsLoading(true);
       const res = await this.axiosInstance.post(
@@ -332,7 +337,8 @@ class ApiClient {
       setIsLoading(false);
     }
     deletePlaylist = async (playlistId) => {
-      const { setIsLoading, setPlaylistsOnDelete } = usePlaylistStore();
+      const { setIsLoading, setPlaylistsOnDelete } =
+        usePlaylistStore.getState();
       try {
         setIsLoading(true);
         await this.axiosInstance.delete(`/playlist/${playlistId}`);
@@ -341,10 +347,11 @@ class ApiClient {
       } catch (error) {
         console.error(`Error deleting playlist`, error);
         toast.error("Failed to delete playlist");
-      }finally {
+      } finally {
         setIsLoading(false);
       }
     };
+    
   };
 }
 
