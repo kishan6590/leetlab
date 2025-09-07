@@ -3,7 +3,7 @@ import React from "react";
 function PrivacyPage() {
   return (
     <div
-      className="flex w-full  border justify-center items-center  pl-5 mt-5 "
+      className="flex w-full   justify-center items-center  pl-5 mt-5 "
       style={{
         background:
           "linear-gradient(to bottom right,#09090b 5% ,#171717 60%,#172554)",

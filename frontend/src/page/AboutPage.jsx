@@ -1,10 +1,16 @@
 import React from "react";
+import Footer from "../components/footer";
 
 function AboutPage() {
   return (
-    <div className="w-full h-screen  flex flex-col items-center  pl-5 mt-5"
-    style={{background:"linear-gradient(to bottom right,#09090b 5% ,#171717 60%,#172554)"}}>
-      <div className="  w-[85%] space-y-4" >
+    <div
+      className="w-full h-screen  flex flex-col items-center  pl-5 mt-10"
+      style={{
+        background:
+          "linear-gradient(to bottom right,#09090b 5% ,#171717 60%,#172554)",
+      }}
+    >
+      <div className="  w-[85%] space-y-4">
         <h2 className=" text-3xl font-bold"> About ProCoder</h2>
         <p className="text-lg">
           ProCoder is a platform dedicated to helping developers enhance their
@@ -36,6 +42,7 @@ function AboutPage() {
           improve our platform bases on your suggestions.
         </p>
       </div>
+      <Footer />
     </div>
   );
 }
